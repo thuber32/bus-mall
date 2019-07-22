@@ -1,42 +1,57 @@
 'use strict';
 
-var productName = ['bag','banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'usb', 'water-can', 'wine-glass'];
+var productNames = ['bag','banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'usb', 'water-can', 'wine-glass'];
 var allProducts= [];
 var totalClicks = 0;
+var randomProducts=[];
 
-function Product(productName, imageUrl, clicks, views) {
-    this.productName = productName;
-    this.imageUrl = 'bus-mall/img/' + name + '.jpg';
+function Product(name) {
+    this.name = name;
+    this.imageUrl = '/img/' + name + '.jpg';
     this.clicks = 0;
     this.views = 0;
     allProducts.push(this);
 };
+
+function createProducts() {
+    for(var i = 0; i < productNames.length; i++){
+      new Product(productNames[i]);
+    }
+  };
 
 function randomImage (){
     return Math.floor(Math.random() * allProducts.length);
 }
 
 function createRandomImages(){
-    var product1 = randomImage();
-    var product2 = randomImage();
+    var product1 = allProducts[randomImage()];
+    var product2 = allProducts[randomImage()];
       while(product1 === product2) {
-          product2 = randomImage();
+          product2 = allProducts[randomImage()];
       }
-      var product3 = randomImage();
+      var product3 = allProducts[randomImage()];
       while(product2 === product3 || product3 === product1) {
-          product3 = randomImage();
-      }
-}
+          product3 = allProducts[randomImage()];
+      } 
+      randomProducts= [];
+      randomProducts.push(product1);
+      randomProducts.push(product2);
+      randomProducts.push(product3);
+      product1.views++;
+      product2.views++;
+      product3.views++;
+};
 
 function render(){
-  var productSection = document.getElementsById('products');
-  productSection.innerText= '';
+   
+  var productSection = document.getElementById('products');
+  productSection.innerHTML= '';
   createRandomImages();
   for (var i=0; i < 3; i++){
-      var img = document.createElementById('img');
-      img.setAttribute('src=',allProducts[i].imageUrl);
-      img.setAttribute('data-name',allProducts[i].name);
-      img.addEventListener('clicks',handleVote);
+      var img = document.createElement('img');
+      img.setAttribute('src',randomProducts[i].imageUrl);
+      img.setAttribute('data-name',randomProducts[i].name);
+      img.addEventListener('click',handleVote);
       productSection.appendChild(img);
   }  
 };
@@ -45,30 +60,27 @@ function handleVote(event) {
     var productName = event.target.dataset.name;
     for (var i = 0; i < allProducts.length; i++){
         if (allProducts[i].name === productName){
-            allProducts [i].clicks++;
-            totalClicks ++;
+            allProducts[i].clicks++;
+            totalClicks++;
         }
+    } 
+    if (totalClicks === 25) {
+       var
+       img.removeEventListener('click',handleVote);
     }
-};
- if (totalClicks === 25) {
-     var img = document.getElementById ('img');
-     for (var i = 0; i < img.length; i++){
-         img[i].removeEventListener('clicks', handleVote);
-     }
- }  getResults();
+    render();
+    console.table(allProducts);
+}
 
  function getResults() {
-    var results = getElementById('clicks');
-    var ul = createElement (ul);
+    var results = document.getElementById('results');
+    var ul = document.createElement (ul);
     for (var i = 0; i < allProducts.length; i++){
         var product = allProducts[i];
         var li = getElementById('li');
         li.contentText = product.name + ' has ' + product.clicks + 'votes.';
         ul.appendChild(li);
     } 
-    results.appendChild(ul);
  }
-
-
-handleVote();
+createProducts();
 render();
