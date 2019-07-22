@@ -12,4 +12,8 @@ function Product(name) {
 }
 
 //create prototypes to for methods of product
+Product.prototype.render()= 
 
+fuction render(){
+
+}
