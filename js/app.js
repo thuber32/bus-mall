@@ -71,28 +71,26 @@ function handleVote(event) {
             render();
         }
     }
-    if (totalClicks === 25) {
-        var imgs = getElementById('img');
-        for (var i = 0; i < image.length; i++) {
+    if (totalClicks === 5) {
+        var imgs = document.getElementsByTagName('img');
+        for (var i = 0; i < imgs.length; i++) {
             imgs[i].removeEventListener('click', handleVote);
         }
         getResults();
     } 
     console.table(allProducts);
 	console.log('Total Clicks', totalClicks);
-
 }
 
 function getResults() {
     var resultsLocation = document.getElementById('results');
-    var resultsList = document.createElement(ul);
+    var resultsList = document.createElement('ul');
     for (var i = 0; i < allProducts.length; i++) {
-        var productResults = document.createElement(li);
-        productResults.contentText = allProducts[i].imageDescription + ' has ' + allProducts[i].clicks + ' votes and was viewed ' + allProduct[i].views + 'times.';
+        var productResults = document.createElement('li');
+        productResults.contentText = allProducts[i].name + ' has ' + allProducts[i].clicks + ' votes and was viewed ' + allProducts[i].views + 'times.';
         resultsList.appendChild(productResults);
     }
     resultsLocation.appendChild(resultsList);
-}
+} console.log ('hi');
 createProducts();
-
 render();
