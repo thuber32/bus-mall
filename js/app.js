@@ -78,19 +78,23 @@ function handleVote(event) {
         }
         getResults();
     } 
-    console.table(allProducts);
-	console.log('Total Clicks', totalClicks);
+    //console.table(allProducts);
+	//console.log('Total Clicks', totalClicks);
 }
 
 function getResults() {
     var resultsLocation = document.getElementById('results');
     var resultsList = document.createElement('ul');
     for (var i = 0; i < allProducts.length; i++) {
+        console.log (i);
+
         var productResults = document.createElement('li');
-        productResults.contentText = allProducts[i].name + ' has ' + allProducts[i].clicks + ' votes and was viewed ' + allProducts[i].views + 'times.';
+
+        productResults.textContent = allProducts[i].name + ' has ' + allProducts[i].clicks + ' votes and was viewed ' + allProducts[i].views + 'times.';
         resultsList.appendChild(productResults);
     }
     resultsLocation.appendChild(resultsList);
-} console.log ('hi');
+} 
+
 createProducts();
 render();

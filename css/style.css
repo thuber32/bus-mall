@@ -19,6 +19,7 @@ header{
 }
 .logo p, h1{
     float:left;
+    color: #C1C8CE;
 }
 
 .logo img {
@@ -65,7 +66,7 @@ aside{
     float: left;
     width: 20%;
     border: solid 1px #1d384d;
-    height: 400px;
+    height: 100vh;
     margin: 15px;
     padding: 15px;
 }
