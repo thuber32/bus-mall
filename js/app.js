@@ -43,7 +43,7 @@ function createRandomImages() {
     product1.views++;
     product2.views++;
     product3.views++;
-};
+}
 
 function render() {
 
@@ -60,7 +60,7 @@ function render() {
         
         productSection.appendChild(imageHolder);
     }
-};
+}
 
 function handleVote(event) {
     var selectedProduct = event.target.dataset.name;
@@ -71,30 +71,80 @@ function handleVote(event) {
             render();
         }
     }
-    if (totalClicks === 25) {
+    if (totalClicks === 5) {
         var imgs = document.getElementsByTagName('img');
         for (var i = 0; i < imgs.length; i++) {
             imgs[i].removeEventListener('click', handleVote);
         }
         getResults();
+        showChartResults();
     } 
-    //console.table(allProducts);
-	//console.log('Total Clicks', totalClicks);
+    // console.table(allProducts);
+	// console.log('Total Clicks', totalClicks);
 }
 
 function getResults() {
     var resultsLocation = document.getElementById('results');
     var resultsList = document.createElement('ul');
     for (var i = 0; i < allProducts.length; i++) {
-        console.log (i);
+        // console.log (i);
 
         var productResults = document.createElement('li');
 
-        productResults.textContent = allProducts[i].name + ' has ' + allProducts[i].clicks + ' votes and was viewed ' + allProducts[i].views + 'times.';
+        productResults.textContent = allProducts[i].name + ' has ' + allProducts[i].clicks + ' votes.';
         resultsList.appendChild(productResults);
     }
     resultsLocation.appendChild(resultsList);
 } 
+
+function showChartResults(){
+    var canvas = document.getElementById ('productChart')
+
+    canvas.style.display = 'block';
+
+    var labels= [];
+    var voteCounts = [];
+
+    for (var i = 0; i < allProducts[i].length; i++){
+        labels[i] = allProducts[i].name;
+        voteCounts[i] = parseFloat(allProducts[i].clicks);
+    } 
+    console.log(labels);
+    console.log(voteCounts);
+    var ctx = canvas.getContext('2d');
+    new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+
+        // The data for our dataset
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Product',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: voteCounts,
+            }]
+        },
+        // Configuration options go here
+        options: {
+            responsive: true,
+            scales: {
+                yAxes: [
+                    {
+                        ticks: {
+                            beginAtZero: true,
+                        }
+                    }
+                ]
+            },
+            title:{
+                display: true,
+                text: 'Voting Results For Products',
+            }
+        }
+});
+}
 
 createProducts();
 render();

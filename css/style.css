@@ -65,14 +65,16 @@ main{
 aside{
     float: left;
     width: 20%;
-    border: solid 1px #1d384d;
-    height: 100vh;
+    border: solid 1px  #D9DADA;
+    height: 100%;
     margin: 15px;
     padding: 15px;
+    box-shadow: 15px 5px 5px #303437;
 }
 
 aside h2{
     margin-top: 0;
+    
 }
 
 section{
@@ -86,6 +88,12 @@ section{
     padding: 5px;
     border: solid 1px #D9DADA;
     border-radius: 10%;
+    box-shadow: 15px 5px 5px #303437;
+}
+
+#productChart{
+    width: 100%;
+    border: solid 1px #D9DADA;
     box-shadow: 15px 5px 5px #303437;
 }
 
