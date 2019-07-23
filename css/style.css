@@ -19,6 +19,7 @@ header{
 }
 .logo p, h1{
     float:left;
+    color: #C1C8CE;
 }
 
 .logo img {
@@ -32,7 +33,7 @@ header{
 nav{
     float: right;
     width: 60%;
-    font-size: 0.8rem;
+    font-size: 0.8rem; 
     margin-bottom: 0;
     padding-bottom: 0; 
 }
@@ -64,14 +65,17 @@ main{
 aside{
     float: left;
     width: 20%;
-    border: solid 1px #1d384d;
-    height: 400px;
+    border: solid 1px  #D9DADA;
+    height: 100vh;
     margin: 15px;
     padding: 15px;
+    box-shadow: 15px 5px 5px #303437;
+    line-height: 1.5rem;
 }
 
 aside h2{
     margin-top: 0;
+    
 }
 
 section{
@@ -81,10 +85,16 @@ section{
 }
 
 #products img{
-    margin: 15px;
+    margin: 15px 30px;
     padding: 5px;
     border: solid 1px #D9DADA;
     border-radius: 10%;
+    box-shadow: 15px 5px 5px #303437;
+}
+
+#productChart{
+    width: 90%;
+    border: solid 1px #D9DADA;
     box-shadow: 15px 5px 5px #303437;
 }
 

@@ -43,10 +43,9 @@ function createRandomImages() {
     product1.views++;
     product2.views++;
     product3.views++;
-};
+}
 
 function render() {
-
     var productSection = document.getElementById('products');
     productSection.innerHTML = '';
     createRandomImages();
@@ -55,12 +54,12 @@ function render() {
         imageHolder.setAttribute('src', randomProducts[i].imageUrl);
         imageHolder.setAttribute('data-name', randomProducts[i].name);
         imageHolder.addEventListener('click', handleVote);
-        imageHolder.setAttribute('width', '250px');
-        imageHolder.setAttribute('height', '250px');
+        imageHolder.setAttribute('width', '325px');
+        imageHolder.setAttribute('height', '325px');
         
         productSection.appendChild(imageHolder);
     }
-};
+}
 
 function handleVote(event) {
     var selectedProduct = event.target.dataset.name;
@@ -71,26 +70,78 @@ function handleVote(event) {
             render();
         }
     }
-    if (totalClicks === 5) {
+    if (totalClicks === 25) {
         var imgs = document.getElementsByTagName('img');
         for (var i = 0; i < imgs.length; i++) {
             imgs[i].removeEventListener('click', handleVote);
         }
         getResults();
+        showChartResults();
     } 
-    console.table(allProducts);
-	console.log('Total Clicks', totalClicks);
+    // console.table(allProducts);
+	// console.log('Total Clicks', totalClicks);
 }
 
 function getResults() {
     var resultsLocation = document.getElementById('results');
     var resultsList = document.createElement('ul');
     for (var i = 0; i < allProducts.length; i++) {
+        // console.log (i);
+
         var productResults = document.createElement('li');
-        productResults.contentText = allProducts[i].name + ' has ' + allProducts[i].clicks + ' votes and was viewed ' + allProducts[i].views + 'times.';
+
+        productResults.textContent = allProducts[i].name + ' has ' + allProducts[i].clicks + ' votes.';
         resultsList.appendChild(productResults);
     }
     resultsLocation.appendChild(resultsList);
-} console.log ('hi');
+} 
+
+function showChartResults(){
+    var canvas = document.getElementById ('productChart')
+
+    canvas.style.display = 'block';
+
+    var voteCounts = [];
+
+    for (var i = 0; i < allProducts.length; i++){  
+        voteCounts.push(allProducts[i].clicks);
+    } 
+    var ctx = canvas.getContext('2d');
+    new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+
+        // The data for our dataset
+        data: {
+            labels: productNames,
+            datasets: [{
+                label: 'Product',
+                data: voteCounts,
+                backgroundColor:
+                'rgb(29,56,77)',
+                borderColor: 'rgb(255, 99, 132)',
+                
+            }]
+        },
+        // Configuration options go here
+        options: {
+            responsive: true,
+            scales: {
+                yAxes: [
+                    {
+                        ticks: {
+                            beginAtZero: true,
+                        }
+                    }
+                ]
+            },
+            title:{
+                display: true,
+                text: 'Voting Results For Products',
+            }
+        }
+});
+}
+
 createProducts();
 render();
