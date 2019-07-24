@@ -70,12 +70,17 @@ aside{
     margin: 15px;
     padding: 15px;
     box-shadow: 15px 5px 5px #303437;
-    line-height: 1.5rem;
+    
 }
 
 aside h2{
     margin-top: 0;
     
+}
+
+aside li {
+    font-size: 1.5rem;
+    line-height: 2rem;
 }
 
 section{

@@ -106,6 +106,7 @@ function showChartResults(){
     for (var i = 0; i < allProducts.length; i++){  
         voteCounts.push(allProducts[i].clicks);
     } 
+
     var ctx = canvas.getContext('2d');
     new Chart(ctx, {
         // The type of chart we want to create
