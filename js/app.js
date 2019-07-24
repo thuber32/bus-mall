@@ -52,7 +52,6 @@ function render() {
     for (var i = 0; i < 3; i++) {
         var imageHolder = document.createElement('img');
         imageHolder.setAttribute('src', randomProducts[i].imageUrl);
-        console.log(randomProducts[i].imageUrl);
         imageHolder.setAttribute('data-name', randomProducts[i].name);
         imageHolder.addEventListener('click', handleVote);
         imageHolder.setAttribute('width', '325px');
