@@ -1,10 +1,25 @@
 'use strict';
+window.addEventListener("load", checkSaved);
+
+function checkSaved(){                                                          //checking to see if results are saved in local storage
+    var storedResults = JSON.parse(localStorage.getItem('results'))
+    if (storedResults && storedResults.length) { // If storedResults is not empty
+        // post the results and show the chart
+        getResults(storedResults);
+        showChartResults(storedResults);
+    }
+    else { // otherwise, create the products and render
+        createProducts();
+        render();
+    }
+  }
 
 var productNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'usb', 'water-can', 'wine-glass'];
 var productImages = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
 var allProducts = [];
 var totalClicks = 0;
 var randomProducts = [];
+
 
 function Product() {
     this.name = name;
@@ -14,18 +29,20 @@ function Product() {
     allProducts.push(this);
 };
 
+// creating the products
 function createProducts() {
     for (var i = 0; i < productNames.length; i++) {
         new Product(productNames[i]);
         allProducts[i].name = productNames[i];
         allProducts[i].imageUrl += productImages[i];
+        console.log(allProducts[i]);
     }
 }
 
 function randomImage() {
     return Math.floor(Math.random() * allProducts.length);
 }
-
+//creating random images but making sure each image is not the same
 function createRandomImages() {
     var product1 = allProducts[randomImage()];
     var product2 = allProducts[randomImage()];
@@ -58,14 +75,15 @@ function render() {
         imageHolder.setAttribute('height', '325px');
         
         productSection.appendChild(imageHolder);
-    }
+    } 
 }
-
+//
 function handleVote(event) {
     var selectedProduct = event.target.dataset.name;
     for (var i = 0; i < allProducts.length; i++) {
         if (allProducts[i].name === selectedProduct) {
             allProducts[i].clicks++;
+            localStorage.setItem
             totalClicks++;
             render();
         }
@@ -75,8 +93,9 @@ function handleVote(event) {
         for (var i = 0; i < imgs.length; i++) {
             imgs[i].removeEventListener('click', handleVote);
         }
-        getResults();
-        showChartResults();
+        getResults(allProducts);
+        showChartResults(allProducts);
+        saveResults();
     } 
     // console.table(allProducts);
 	// console.log('Total Clicks', totalClicks);
@@ -94,19 +113,20 @@ function getResults() {
         resultsList.appendChild(productResults);
     }
     resultsLocation.appendChild(resultsList);
+    
 } 
 
-function showChartResults(){
+function showChartResults(productArray){           
     var canvas = document.getElementById ('productChart')
 
     canvas.style.display = 'block';
 
     var voteCounts = [];
 
-    for (var i = 0; i < allProducts.length; i++){  
-        voteCounts.push(allProducts[i].clicks);
+    for (var i = 0; i < productArray.length; i++){  
+        voteCounts.push(productArray[i].clicks);
     } 
-
+    
     var ctx = canvas.getContext('2d');
     new Chart(ctx, {
         // The type of chart we want to create
@@ -144,5 +164,14 @@ function showChartResults(){
 });
 }
 
-createProducts();
-render();
+// }
+function saveResults (){
+    localStorage.setItem ('results', JSON.stringify(allProducts));
+//     if (localStorage. 
+}
+
+var reStart = document.querySelector('button[type="button"]');
+reStart.addEventListener('click', function () {
+    localStorage.clear()
+});
+

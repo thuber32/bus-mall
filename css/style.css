@@ -103,4 +103,18 @@ section{
     box-shadow: 15px 5px 5px #303437;
 }
 
+footer{
+    overflow: hidden;
+    background-color:#D9DADA;
+    margin-bottom: 0px;
+    width: 100%;
+    height: 100px;
+}
+button{
+    background-color: #1d384d;
+    color: #D9DADA;
+    width: 150px;
+    height: 60px;
+}
+
 
