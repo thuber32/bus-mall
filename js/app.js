@@ -8,7 +8,7 @@ var randomProducts = [];
 
 function Product() {
     this.name = name;
-    this.imageUrl = '/img/';
+    this.imageUrl = 'img/';
     this.clicks = 0;
     this.views = 0;
     allProducts.push(this);
