@@ -1,6 +1,18 @@
 'use strict';
 window.addEventListener("load", checkSaved);
 
+function checkSaved(){                                                          //checking to see if results are saved in local storage
+    var storedResults = JSON.parse(localStorage.getItem('results'))
+    if (storedResults && storedResults.length) { // If storedResults is not empty
+        // post the results and show the chart
+        getResults(storedResults);
+        showChartResults(storedResults); 
+    }
+    else { // otherwise, create the products and render
+        createProducts();
+        render();
+    }
+}
 
 
 var productNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'usb', 'water-can', 'wine-glass'];
@@ -157,19 +169,6 @@ function showChartResults(productArray){
 
 function saveResults (){
     localStorage.setItem ('results', JSON.stringify(allProducts)); 
-}
-
-function checkSaved(){                                                          //checking to see if results are saved in local storage
-    var storedResults = JSON.parse(localStorage.getItem('results'))
-    if (storedResults && storedResults.length) { // If storedResults is not empty
-        // post the results and show the chart
-        getResults(storedResults);
-        showChartResults(storedResults); 
-    }
-    else { // otherwise, create the products and render
-        createProducts();
-        render();
-    }
 }
 
 
