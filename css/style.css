@@ -89,18 +89,12 @@ section{
     padding: 15px;
 }
 
-.image{
-    margin: 10px;
-    width: 30%;
-    height: 300px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
+#products img{
+    margin: 15px 30px;
     padding: 5px;
     border: solid 1px #D9DADA;
     border-radius: 10%;
     box-shadow: 15px 5px 5px #303437;
-    float: right;
 }
 
 #productChart{
@@ -121,7 +115,6 @@ button{
     color: #D9DADA;
     width: 150px;
     height: 60px;
-    float: right;
 }
 
 
