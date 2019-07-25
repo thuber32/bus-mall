@@ -1,11 +1,21 @@
 'use strict';
 window.addEventListener("load", checkSaved);
 
-
+function checkSaved(){                                                          //checking to see if results are saved in local storage
+    var storedResults = JSON.parse(localStorage.getItem('results'))
+    if (storedResults && storedResults.length) { // If storedResults is not empty
+        // post the results and show the chart
+        getResults(storedResults);
+        showChartResults(storedResults);
+    }
+    else { // otherwise, create the products and render
+        createProducts();
+        render();
+    }
+  }
 
 var productNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'usb', 'water-can', 'wine-glass'];
 var productImages = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
-var productDescription = ['R2D2 Bag', 'Banana Slicer','Bathroom Stand', 'Toeless Boots', 'All-n-1 Breakfast', 'Meatball Gum', 'Chair', 'Cthulhu', 'Dog Muzzle', 'Dragon Meat', 'Pen Utensil', 'Pet Costume', 'Pizza Scissors', 'Shark Sleeping Bag', 'Baby Costume', 'Tauntaun nap mat', 'USB Stick', 'Water Can', 'Wine Glass'];
 var allProducts = [];
 var totalClicks = 0;
 var randomProducts = [];
@@ -14,7 +24,6 @@ var randomProducts = [];
 function Product() {
     this.name = name;
     this.imageUrl = 'img/';
-    this.description = '';
     this.clicks = 0;
     this.views = 0;
     allProducts.push(this);
@@ -26,37 +35,45 @@ function createProducts() {
         new Product(productNames[i]);
         allProducts[i].name = productNames[i];
         allProducts[i].imageUrl += productImages[i];
-        allProducts[i].description = productDescription[i];
-        // console.log(allProducts[i]);
+        console.log(allProducts[i]);
     }
 }
 
-function randomProduct() {
+function randomImage() {
     return Math.floor(Math.random() * allProducts.length);
+}
+//creating random images but making sure each image is not the same
+function createRandomImages() {
+    var product1 = allProducts[randomImage()];
+    var product2 = allProducts[randomImage()];
+    while (product1 === product2) {
+        product2 = allProducts[randomImage()];
+    }
+    var product3 = allProducts[randomImage()];
+    while (product2 === product3 || product3 === product1) {
+        product3 = allProducts[randomImage()];
+    }
+    randomProducts = [];
+    randomProducts.push(product1);
+    randomProducts.push(product2);
+    randomProducts.push(product3);
+    product1.views++;
+    product2.views++;
+    product3.views++;
 }
 
 function render() {
     var productSection = document.getElementById('products');
     productSection.innerHTML = '';
- 
-    var randomProducts = [];
-
-    for (var i = 0; i < displayNumber; i++) {
-        var product = randomProduct();
-        while (randomProducts.includes(product) || lastShown.includes(product)) {
-            product = randomProduct();
-        }
-        randomProducts.push(product);
-    }
-        
-    lastShown = randomProducts;    
-       
-    for (var i = 0; i < displayNumber ; i++) {
-        allProducts[randomProducts[i]].views++;
-        var imageHolder = document.createElement('div');
-        imageHolder.setAttribute('class', 'image ' + allProducts[randomProducts[i]].name);
-        imageHolder.setAttribute('data-name', allProducts[randomProducts[i]].name);
+    createRandomImages();
+    for (var i = 0; i < 3; i++) {
+        var imageHolder = document.createElement('img');
+        imageHolder.setAttribute('src', randomProducts[i].imageUrl);
+        imageHolder.setAttribute('data-name', randomProducts[i].name);
         imageHolder.addEventListener('click', handleVote);
+        imageHolder.setAttribute('width', '325px');
+        imageHolder.setAttribute('height', '325px');
+        
         productSection.appendChild(imageHolder);
     } 
 }
@@ -72,7 +89,7 @@ function handleVote(event) {
         }
     }
     if (totalClicks === 25) {
-        var imgs = document.getElementsByClassName('image');
+        var imgs = document.getElementsByTagName('img');
         for (var i = 0; i < imgs.length; i++) {
             imgs[i].removeEventListener('click', handleVote);
         }
@@ -88,9 +105,10 @@ function getResults() {
     var resultsLocation = document.getElementById('results');
     var resultsList = document.createElement('ul');
     for (var i = 0; i < allProducts.length; i++) {
-        console.log (i);
+        // console.log (i);
 
         var productResults = document.createElement('li');
+
         productResults.textContent = allProducts[i].name + ' has ' + allProducts[i].clicks + ' votes.';
         resultsList.appendChild(productResults);
     }
@@ -118,25 +136,17 @@ function showChartResults(productArray){
         data: {
             labels: productNames,
             datasets: [{
-                label: 'votes',
+                label: 'Product',
                 data: voteCounts,
                 backgroundColor:
                 'rgb(29,56,77)',
-                borderColor: 
-                'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                
             }]
         },
         // Configuration options go here
         options: {
             responsive: true,
-            layout: {
-                padding: {
-                  left: 25,
-                  right: 50,
-                  top: 100,
-                  bottom: 0
-                }
-            },
             scales: {
                 yAxes: [
                     {
@@ -154,28 +164,14 @@ function showChartResults(productArray){
 });
 }
 
-
+// }
 function saveResults (){
-    localStorage.setItem ('results', JSON.stringify(allProducts)); 
+    localStorage.setItem ('results', JSON.stringify(allProducts));
+//     if (localStorage. 
 }
-
-function checkSaved(){                                                          //checking to see if results are saved in local storage
-    var storedResults = JSON.parse(localStorage.getItem('results'))
-    if (storedResults && storedResults.length) { // If storedResults is not empty
-        // post the results and show the chart
-        getResults(storedResults);
-        showChartResults(storedResults); 
-    }
-    else { // otherwise, create the products and render
-        createProducts();
-        render();
-    }
-}
-
 
 var reStart = document.querySelector('button[type="button"]');
-reStart.addEventListener('click', function resetButton(event){
-    localStorage.clear();
-    
+reStart.addEventListener('click', function () {
+    localStorage.clear()
 });
 
