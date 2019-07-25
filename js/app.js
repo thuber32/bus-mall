@@ -5,8 +5,10 @@ function checkSaved(){                                                          
     var storedResults = JSON.parse(localStorage.getItem('results'))
     if (storedResults && storedResults.length) { // If storedResults is not empty
         // post the results and show the chart
+        render();
         getResults(storedResults);
-        showChartResults(storedResults);
+        showChartResults(storedResults); 
+        
     }
     else { // otherwise, create the products and render
         createProducts();
@@ -35,7 +37,7 @@ function createProducts() {
         new Product(productNames[i]);
         allProducts[i].name = productNames[i];
         allProducts[i].imageUrl += productImages[i];
-        console.log(allProducts[i]);
+        // console.log(allProducts[i]);
     }
 }
 
@@ -67,8 +69,8 @@ function render() {
     productSection.innerHTML = '';
     createRandomImages();
     for (var i = 0; i < 3; i++) {
-        var imageHolder = document.createElement('img');
-        imageHolder.setAttribute('src', randomProducts[i].imageUrl);
+        var imageHolder = document.createElement('div');
+        imageHolder.setAttribute('class', 'image ' + randomProducts[i].name);
         imageHolder.setAttribute('data-name', randomProducts[i].name);
         imageHolder.addEventListener('click', handleVote);
         imageHolder.setAttribute('width', '325px');
@@ -89,7 +91,7 @@ function handleVote(event) {
         }
     }
     if (totalClicks === 25) {
-        var imgs = document.getElementsByTagName('img');
+        var imgs = document.getElementsByClassName('image');
         for (var i = 0; i < imgs.length; i++) {
             imgs[i].removeEventListener('click', handleVote);
         }
@@ -105,7 +107,7 @@ function getResults() {
     var resultsLocation = document.getElementById('results');
     var resultsList = document.createElement('ul');
     for (var i = 0; i < allProducts.length; i++) {
-        // console.log (i);
+        console.log (i);
 
         var productResults = document.createElement('li');
 
@@ -136,7 +138,7 @@ function showChartResults(productArray){
         data: {
             labels: productNames,
             datasets: [{
-                label: 'Product',
+                label: 'votes',
                 data: voteCounts,
                 backgroundColor:
                 'rgb(29,56,77)',
@@ -164,14 +166,15 @@ function showChartResults(productArray){
 });
 }
 
-// }
+
 function saveResults (){
-    localStorage.setItem ('results', JSON.stringify(allProducts));
-//     if (localStorage. 
+    localStorage.setItem ('results', JSON.stringify(allProducts)); 
 }
 
 var reStart = document.querySelector('button[type="button"]');
-reStart.addEventListener('click', function () {
-    localStorage.clear()
+reStart.addEventListener('click', function resetButton(event){
+    localStorage.clear();
+    createProducts();
+    render();
 });
 
